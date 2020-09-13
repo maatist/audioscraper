@@ -1,8 +1,6 @@
-
-
-
-
 const playwright = require('playwright');
+
+
 
 const text = (async () => {
 
@@ -10,10 +8,6 @@ const text = (async () => {
     const browser = await playwright.chromium.launch( { headless: false } );
     const page = await browser.newPage();
     
-
-    
-    
-
     await page.goto('https://www.audiomusica.com/guitarras.html');
 
     
@@ -32,14 +26,6 @@ const text = (async () => {
         for (var i = 1; i<22; i++) {
     
     
-            // Seleccionar selector de cada item para hacer click
-    
-            /* const CLICK_SELECTOR = `li.product:nth-child(${i}) > div:nth-child(1) > a:nth-child(2)`
-            console.log(CLICK_SELECTOR)
-    
-            await page.click(CLICK_SELECTOR)
-            await page.waitForTimeout(300) */
-    
             const TITULO_ITEM_SELECTOR = `li.product:nth-child(${i}) > div:nth-child(1) > div:nth-child(4) > strong:nth-child(2) > a:nth-child(1)`
             const PRECIO_ITEM_SELECTOR = `//html/body/div[1]/main/div[2]/div[1]/div[4]/div[3]/ol/li[${i}]/div/div[3]/div[2]/div[1]/div/span/span/span`
     
@@ -47,7 +33,7 @@ const text = (async () => {
             await page.waitForSelector(TITULO_ITEM_SELECTOR)
     
         
-            // dentro de la pagina del item sacar info
+            // dentro de la pagina sacar info
     
             let result = await page.$(TITULO_ITEM_SELECTOR);
             
@@ -57,10 +43,6 @@ const text = (async () => {
             result = await page.$(PRECIO_ITEM_SELECTOR);
             let precio = await result.evaluate(element => element.innerText)
         
-            /* result = await page.$(DESCRIPTION_ITEM);
-            let description = await result.evaluate(element => element.innerText) */
-            /* await page.waitForTimeout(200)
-            await page.goBack() */
             
             if (precio == 'Precio especial') {
                 const PRECIO_ESPECIAL_SELECTOR = `//html/body/div[1]/main/div[2]/div[1]/div[4]/div[3]/ol/li[${i}]/div/div[3]/div[2]/div[1]/div/span[1]/span/span[2]/span`
@@ -93,7 +75,6 @@ const text = (async () => {
         } else {
             break
         }
-
 
     } 
     
