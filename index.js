@@ -4,23 +4,27 @@ const playwright = require('playwright');
 
 const text = (async () => {
 
+    const pagina = 'https://www.audiomusica.com/guitarras.html'
+
     
+
     const browser = await playwright.chromium.launch( { headless: false } );
     const page = await browser.newPage();
     
-    await page.goto('https://www.audiomusica.com/guitarras.html');
+    await page.goto(pagina);
 
     
     while (true) {
 
         
-        const LAST_ITEM = 'li.product:last-child > div:nth-child(1) > div:nth-child(4) > strong:nth-child(2) > a:nth-child(1'
+        const LAST_ITEM = 'li.product:last-child > div:nth-child(1) > div:nth-child(4) > strong:nth-child(2) > a:nth-child(1)'
         await page.waitForSelector(LAST_ITEM)
     
         
         const LAST_ITEM_RESULT = await page.$(LAST_ITEM)
         const LAST_ITEM_TITLE = await LAST_ITEM_RESULT.evaluate(element => element.innerText)
-        console.log(LAST_ITEM_TITLE)
+        
+        /* console.log(LAST_ITEM_TITLE) */
     
     
         for (var i = 1; i<22; i++) {
@@ -65,13 +69,20 @@ const text = (async () => {
         }
 
         // Despues de scrapear la pagina hacer click en siguente
+        
+        const paginaActual = page.url()
 
-        const NEXT_SELECTOR = 'div.toolbar:nth-child(5) > div:nth-child(3) > ul:nth-child(2) > li:nth-child(7) > a:nth-child(1)'
+        const NEXT_SELECTOR = (paginaActual == pagina) ? 
+            'div.toolbar:nth-child(5) > div:nth-child(3) > ul:nth-child(2) > li:nth-child(6) > a:nth-child(1)' : 
+            'div.toolbar:nth-child(5) > div:nth-child(3) > ul:nth-child(2) > li:nth-child(7) > a:nth-child(1)'
+
+
         const NEXT_SELECTOR_RESULT = await page.$(NEXT_SELECTOR)
+        
 
-        if (NEXT_SELECTOR_RESULT !== null) {
+        if (NEXT_SELECTOR_RESULT != null) {
             await page.click(NEXT_SELECTOR)
-            page.waitForTimeout(500)
+            page.waitForTimeout(200)
         } else {
             break
         }
